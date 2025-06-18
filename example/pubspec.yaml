@@ -1,0 +1,12 @@
+name: example
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  supabase: ^2.8.0
+  typesafe_postgrest:
+    path: ../
+
+dev_dependencies:
+  very_good_analysis: ^9.0.0
