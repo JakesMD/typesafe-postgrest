@@ -9,5 +9,5 @@ class PgModelBuilder<TableType, ModelType extends PgModel<TableType>> {
 
   final ModelType Function(PostgrestMap) constructor;
 
-  final PgColumnList columns;
+  final PgColumnList<TableType> columns;
 }
