@@ -188,10 +188,21 @@ packages:
   typesafe_postgrest:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "3dc0451b255bde0a50b821f099bb31bb185944bd"
+      url: "https://github.com/JakesMD/typesafe-postgrest.git"
+    source: git
     version: "0.0.1-dev.1"
+  typesafe_supabase:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: beta
+      resolved-ref: "554cc4d8638c6a89649882d6ee75de565ed76788"
+      url: "https://github.com/JakesMD/typesafe-supabase.git"
+    source: git
+    version: "0.0.2-dev.1"
   very_good_analysis:
     dependency: "direct dev"
     description:

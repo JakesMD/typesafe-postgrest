@@ -13,8 +13,8 @@ void main() async {
     SUPABASE_PROJECT_URL,
     SUPABASE_ANON_KEY,
   );
-  final booksTable = BooksTable(supabaseClient: supabaseClient);
-  final authorsTable = AuthorsTable(supabaseClient: supabaseClient);
+  final booksTable = BooksTable(supabaseClient);
+  final authorsTable = AuthorsTable(supabaseClient);
 
   final book = await booksTable.fetch(
     columns: Book.builder.columns,

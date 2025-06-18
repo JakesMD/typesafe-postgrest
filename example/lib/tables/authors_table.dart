@@ -1,10 +1,9 @@
 import 'package:example/tables/books_table.dart';
-import 'package:supabase/supabase.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
+import 'package:typesafe_supabase/typesafe_supabase.dart';
 
-class AuthorsTable extends PgTable<AuthorsTable> {
-  AuthorsTable({required SupabaseClient supabaseClient})
-    : super(tableName: tableName, initialQuery: supabaseClient.from);
+class AuthorsTable extends SupabaseTable<AuthorsTable> {
+  AuthorsTable(super.client) : super(tableName: tableName, primaryKey: [id]);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
   static final id = PgBigIntColumn<AuthorsTable>('id');

@@ -1,12 +1,19 @@
-# typesafe-postgres
+# typesafe-postgrest
 
 > 🚧 **WIP!** This package is still under development. The example below is what the API currently looks like.
 
+- [x] ⚡️ Typesafe queries
+- [x] ⚡️ Foolproof filters
+- [x] ⚡️ Foolproof modifiers
+- [x] ⚡️ Custom models
+- [x] ⚡️ Zero boilerplate
+- [x] ⚡️ Optional code generation
+
+
 Just provide your table:
 ``` dart
-class AuthorsTable extends PgTable<AuthorsTable> {
-  AuthorsTable({required YourPostgrestClient client})
-    : super(tableName: tableName, initialQuery: supabaseClient.from);
+class AuthorsTable extends SupabaseTable<AuthorsTable> {
+  AuthorsTable(super.client) : super(tableName: tableName, primaryKey: [id]);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
   static final id = PgBigIntColumn<AuthorsTable>('id');
@@ -42,7 +49,7 @@ dart run build_runner build
 
 And fetch your data:
 ``` dart
-final authorsTable = AuthorsTable(client: yourPostgrestClient);
+final authorsTable = AuthorsTable(supabaseClient);
 
 final author = await authorsTable.fetch(
   columns: Author.builder.columns,
