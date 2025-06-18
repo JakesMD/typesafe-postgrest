@@ -4,11 +4,7 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 class BooksTable extends PgTable<BooksTable> {
   BooksTable({required SupabaseClient supabaseClient})
-    : super(
-        tableName: tableName,
-        primaryKeys: [title],
-        initialQuery: supabaseClient.from,
-      );
+    : super(tableName: tableName, initialQuery: supabaseClient.from);
 
   static const tableName = PgTableName<BooksTable>('books');
 

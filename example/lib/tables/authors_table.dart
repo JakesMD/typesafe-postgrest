@@ -4,11 +4,7 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 class AuthorsTable extends PgTable<AuthorsTable> {
   AuthorsTable({required SupabaseClient supabaseClient})
-    : super(
-        tableName: tableName,
-        primaryKeys: [id],
-        initialQuery: supabaseClient.from,
-      );
+    : super(tableName: tableName, initialQuery: supabaseClient.from);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
   static final id = PgBigIntColumn<AuthorsTable>('id');

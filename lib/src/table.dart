@@ -4,20 +4,17 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 class PgTable<TableType> {
   PgTable({
     required PgTableName<TableType> tableName,
-    required this.primaryKeys,
     required this.initialQuery,
   }) : _tableName = tableName.name;
 
   final String _tableName;
-
-  final PgColumnList primaryKeys;
 
   // Raw type is unnecessary here since it is only the initial query.
   // ignore: strict_raw_type
   final PostgrestQueryBuilder Function(String tableName) initialQuery;
 
   Future<T> fetch<T, ModelType>({
-    required PgColumnList columns,
+    required PgColumnList<TableType> columns,
     required PgModifier<TableType, T, dynamic, ModelType> modifier,
 
     PgFilter<TableType>? filter,

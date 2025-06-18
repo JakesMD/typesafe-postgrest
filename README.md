@@ -6,11 +6,7 @@ Just provide your table:
 ``` dart
 class AuthorsTable extends PgTable<AuthorsTable> {
   AuthorsTable({required YourPostgrestClient client})
-    : super(
-        tableName: tableName,
-        primaryKeys: [id],
-        initialQuery: client.from,
-      );
+    : super(tableName: tableName, initialQuery: supabaseClient.from);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
   static final id = PgBigIntColumn<AuthorsTable>('id');
