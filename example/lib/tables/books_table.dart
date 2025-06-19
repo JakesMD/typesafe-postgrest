@@ -10,7 +10,7 @@ class BooksTable extends SupabaseTable<BooksTable> {
   static final id = PgBigIntColumn<BooksTable>('id');
   static final title = PgStringColumn<BooksTable>('title');
   static final authorID = PgBigIntColumn<BooksTable>('author_id');
-  static final pages = PgOptionalIntColumn<BooksTable>('pages');
+  static final pages = PgMaybeIntColumn<BooksTable>('pages');
 
   static final author = PgJoinToOne<BooksTable, AuthorsTable>(
     BooksTable.authorID,

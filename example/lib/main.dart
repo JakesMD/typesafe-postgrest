@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:example/author_models/author.dart';
-import 'package:example/book_models/book.dart';
+import 'package:example/models/_models.dart';
 import 'package:example/secrets.dart';
 import 'package:example/tables/authors_table.dart';
 import 'package:example/tables/books_table.dart';
@@ -16,18 +15,16 @@ void main() async {
   final booksTable = BooksTable(supabaseClient);
   final authorsTable = AuthorsTable(supabaseClient);
 
-  final book = await booksTable.fetch(
-    columns: Book.builder.columns,
-    filter: BooksTable.title.equals(''),
-    modifier: booksTable.limit(1).single().asModel(Book.new),
+  final books = await booksTable.fetchModels(
+    modelBuilder: Book.builder,
+    modifier: booksTable.asRaw(),
   );
 
-  print(book.authors);
+  print(books);
 
-  final author = await authorsTable.fetch(
-    columns: Author.builder.columns,
-    filter: AuthorsTable.name.equals(''),
-    modifier: authorsTable.limit(1).single().asModel(Author.new),
+  final author = await authorsTable.fetchModel(
+    modelBuilder: Author.builder,
+    modifier: authorsTable.limit(1).single(),
   );
 
   print(author.books);

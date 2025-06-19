@@ -7,7 +7,7 @@
 - [x] ⚡️ Foolproof modifiers
 - [x] ⚡️ Custom models
 - [x] ⚡️ Zero boilerplate
-- [x] ⚡️ Optional code generation
+- [x] ⚡️ Maybe code generation
 
 
 Just provide your table:
@@ -51,10 +51,10 @@ And fetch your data:
 ``` dart
 final authorsTable = AuthorsTable(supabaseClient);
 
-final author = await authorsTable.fetch(
-  columns: Author.builder.columns,
+final author = await authorsTable.fetchModel(
+  modelBuilder: Author.builder,
   filter: AuthorsTable.name.equals('Michael Bond'),
-  modifier: authorsTable.limit(1).single().asModel(Author.new),
+  modifier: authorsTable.limit(1).single(),
 );
 
 print(author.books);
