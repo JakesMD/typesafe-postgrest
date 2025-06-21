@@ -6,8 +6,14 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
   AuthorsTable(super.client) : super(tableName: tableName, primaryKey: [id]);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
+
+  /// The ID of the author.
   static final id = PgBigIntColumn<AuthorsTable>('id');
+
+  /// The name of the author.
   static final name = PgStringColumn<AuthorsTable>('name');
+
+  /// The books written by the author.
   static final books = PgJoinToMany<AuthorsTable, BooksTable>(
     id,
     BooksTable.tableName,

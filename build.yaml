@@ -1,0 +1,15 @@
+# Read about `build.yaml` at https://pub.dev/packages/build_config
+targets:
+  $default:
+    builders:
+      typesafe_postgrest|model_x:
+        enabled: true
+
+builders:
+  model_x:
+    import: "package:typesafe_postgrest/src/generator/builder.dart"
+    builder_factories: ["pgModelXBuilder"]
+    build_extensions: { ".dart": [".model.g.dart"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen:combining_builder"]

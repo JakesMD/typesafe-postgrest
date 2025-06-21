@@ -15,7 +15,11 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 class PgJoinToOne<TableType, JoinedTableType>
     extends PgJoin<TableType, JoinedTableType> {
   ///  {@macro typesafe_postgrest.PgJoinToOne}
-  PgJoinToOne(super.joinColumn, super.joinedTableName, {super.foreignKey});
+  const PgJoinToOne(
+    super.joinColumn,
+    super.joinedTableName, {
+    super.foreignKey,
+  });
 
   @override
   PgQueryColumn<TableType, ModelType, PgJsonMap>
