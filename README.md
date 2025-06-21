@@ -59,3 +59,15 @@ final author = await authorsTable.fetchModel(
 
 print(author.books);
 ```
+
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
+
+Especially looking for:
+- [ ] Missing filters
+- [ ] Missing modifiers
+- [ ] New column types
+- [ ] Documentation improvements
+- [ ] Bug fixes (especially around code generation)
+
+Adding filters, modifiers and column types is a piece of cake. So please don't hesitate to open an issue or PR.

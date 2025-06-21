@@ -2,12 +2,10 @@ import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
-/// Provided methods on a [PostgrestTransformBuilder] in order to apply custom
-/// modifiers.
+@internal
 extension PgPostgrestTransformBuilderX
     on PostgrestTransformBuilder<PgJsonList> {
   /// Applies the provided [PgModifier] to the transform builder.
-  @internal
   PostgrestBuilder<dynamic, dynamic, dynamic>
   applyPgModifier<TableType, CurrentType, PreviousType>(
     PgModifier<TableType, CurrentType, PreviousType> modifier,

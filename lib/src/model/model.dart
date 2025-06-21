@@ -39,7 +39,9 @@ class PgModel<TableType> {
   ///
   /// Generally, you shouldn't need to use this method directly, as it is used
   /// in the generated code.
-  ValueType value<ValueType>(PgColumn<TableType, ValueType, dynamic> column) =>
+  ValueType value<ValueType>(
+    PgQueryColumn<TableType, ValueType, dynamic> column,
+  ) =>
       values.firstWhere((value) => value.columnName == column.name).value
           as ValueType;
 }

@@ -1,13 +1,9 @@
 import 'package:postgrest/postgrest.dart';
+import 'package:typesafe_postgrest/src/filter/filter.dart';
 import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
-export 'column.dart';
-export 'columns/_columns.dart';
-export 'join_to_many.dart';
-export 'join_to_one.dart';
 export 'table_name.dart';
-export 'value.dart';
 
 /// {@template typesafe_postgrest.PgTable}
 ///
@@ -40,12 +36,13 @@ class PgTable<TableType> {
   /// Fetches data from the database. The result type is determined by the
   /// modifier.
   Future<T> fetch<T>({
-    required PgColumnList<TableType> columns,
+    required PgQueryColumnList<TableType> columns,
     required PgModifier<TableType, T, dynamic> modifier,
     PgFilter<TableType>? filter,
   }) async {
     final response = await initialQuery(_tableName)
         .select(columns.map((c) => c.queryPattern).join(', '))
+        .applyPgFilter(filter)
         .applyPgModifier(modifier);
 
     return response as T;
@@ -64,7 +61,12 @@ class PgTable<TableType> {
 
     final response = await initialQuery(_tableName)
         .select(modelBuilder.columns.map((c) => c.queryPattern).join(', '))
+        .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
+
+    if (response is PgJsonMap) {
+      return [modelModifier.fromJson(response)];
+    }
 
     return PgJsonList.from(
       response as List,
@@ -81,6 +83,7 @@ class PgTable<TableType> {
 
     final response = await initialQuery(_tableName)
         .select(modelBuilder.columns.map((c) => c.queryPattern).join(', '))
+        .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
 
     return modelModifier.fromJson(response as PgJsonMap);
@@ -99,49 +102,11 @@ class PgTable<TableType> {
 
     final response = await initialQuery(_tableName)
         .select(modelBuilder.columns.map((c) => c.queryPattern).join(', '))
+        .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
 
     if (response == null) return null;
 
     return modelModifier.fromJson(response as PgJsonMap);
   }
-
-  /// {@macro typesafe_postgrest.PgAsCSVModifier}
-  PgAsCSVModifier<TableType> asCSV() => PgAsCSVModifier(null);
-
-  /// {@macro typesafe_postgrest.PgAsModelsModifier}
-  PgAsModelsModifier<TableType, ModelType>
-  asModels<ModelType extends PgModel<TableType>>(
-    ModelType Function(PgJsonMap) fromJson,
-  ) => PgAsModelsModifier(null, fromJson);
-
-  /// {@macro typesafe_postgrest.PgRawModifier}
-  PgAsRawModifier<TableType> asRaw() => PgAsRawModifier(null);
-
-  /// {@macro typesafe_postgrest.PgCountModifier}
-  PgCountModifier<TableType> count(CountOption option) =>
-      PgCountModifier(null, option);
-
-  /// {@macro typesafe_postgrest.PgMaybeSingleModifier}
-  PgLimitModifier<TableType> limit(int limit) => PgLimitModifier(null, limit);
-
-  /// {@macro typesafe_postgrest.PgMaybeSingleModifier}
-  PgMaybeSingleModifier<TableType> maybeSingle() => PgMaybeSingleModifier(null);
-
-  /// {@macro typesafe_postgrest.PgNoneModifier}
-  PgNoneModifier<TableType> none() => PgNoneModifier(null);
-
-  /// {@macro typesafe_postgrest.PgOrderModifier}
-  PgOrderModifier<TableType> order(
-    PgColumn<TableType, dynamic, dynamic> column, {
-    bool ascending = false,
-    bool nullsFirst = false,
-  }) => PgOrderModifier(null, column, ascending, nullsFirst);
-
-  /// {@macro typesafe_postgrest.PgRangeModifier}
-  PgRangeModifier<TableType> range(int start, int end) =>
-      PgRangeModifier(null, start, end);
-
-  /// {@macro typesafe_postgrest.PgSingleModifier}
-  PgSingleModifier<TableType> single() => PgSingleModifier(null);
 }

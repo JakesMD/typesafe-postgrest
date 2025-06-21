@@ -3,9 +3,9 @@ import 'package:postgrest/postgrest.dart';
 import 'package:typesafe_postgrest/src/modifier/modifier_builder.dart';
 
 export 'extensions/_extensions.dart';
+export 'extensions/postgrest_transform_builder.dart';
 export 'modifier_builder.dart';
 export 'modifiers/_modifiers.dart';
-export 'postgrest_transform_builder_x.dart';
 
 /// {@template typesafe_postgrest.PgModifier}
 ///

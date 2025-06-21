@@ -1,6 +1,11 @@
 import 'package:meta/meta.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
+export 'columns/_columns.dart';
+export 'filter_column.dart';
+export 'query_column.dart';
+export 'value.dart';
+
 /// {@template typesafe_postgrest.PgColumn}
 ///
 /// Represents a column in a table.
@@ -16,44 +21,53 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 /// only generate values of the provided [TableType].
 ///
 /// {@endtemplate}
-class PgColumn<TableType, ValueType, JsonValueType> {
+class PgColumn<TableType, ValueType, JsonValueType>
+    implements
+        PgQueryColumn<TableType, ValueType, JsonValueType>,
+        PgFilterColumn<TableType, ValueType, JsonValueType> {
   /// {@macro typesafe_postgrest.PgColumn}
   const PgColumn(this.name, {required this.fromJson, required this.toJson})
-    : queryPattern = name;
+    : queryPattern = name,
+      filterPattern = name;
 
   /// {@macro typesafe_postgrest.PgColumn}
   ///
   /// Constructs a [PgColumn] with a custom query pattern.
   @internal
-  const PgColumn.withQueryPattern(
+  const PgColumn.withPatterns(
     this.name, {
     required this.queryPattern,
+    required this.filterPattern,
     required this.fromJson,
     required this.toJson,
   });
 
-  /// The name of the column in the postgres table.
+  @override
   final String name;
 
-  /// The query pattern to use when querying for this column.
-  ///
-  /// The query pattern is generated automatically by the library.
-  ///
-  /// Generally, this is the same as the name of the column.
-  ///
-  /// For joins and JSON references, this will be a fancy query pattern
-  /// depending on the join type and referenced columns. These fancy query
-  /// patterns are generated in [PgJoinToOne.call], [PgMaybeJoinToOne.call] and
-  /// [PgJoinToMany.call].
+  @override
   final String queryPattern;
 
+  @override
+  final String filterPattern;
+
+  /// {@template typesafe_postgrest.PgColumn.fromJson}
+  ///
   /// The function used to convert a JSON value to a [ValueType].
+  ///
+  /// {@endtemplate}
+  @override
   final ValueType Function(JsonValueType jsonValue) fromJson;
 
+  /// {@template typesafe_postgrest.PgColumn.toJson}
+  ///
   /// The function used to convert a [ValueType] to a JSON value.
   ///
   /// This is used when inserting, upserting and updating a value. Should you
   /// not need this behavior, just provide a dummy function instead.
+  ///
+  /// {@endtemplate}
+  @override
   final JsonValueType Function(ValueType value) toJson;
 
   /// Creates a [PgValue] from the provided [value] of the type [ValueType].
@@ -61,13 +75,20 @@ class PgColumn<TableType, ValueType, JsonValueType> {
   /// This is used when inserting, upserting and updating a value.
   PgValue<TableType, ValueType> call(ValueType value) => PgValue(name, value);
 
-  /// Creates a [PgValue] from the provided JSON [value] using the [fromJson]
-  /// function.
   @internal
+  @override
   PgValue<TableType, ValueType> pgValueFromJson(dynamic value) => PgValue(
     name,
+    // Note: The value can be null when filtering in referenced tables.
     JsonValueType == PgJsonList
-        ? fromJson(PgJsonList.from(value as List) as JsonValueType)
+        ? fromJson(
+            PgJsonList.from(value != null ? value as List : [])
+                as JsonValueType,
+          )
+        : JsonValueType == PgJsonMap
+        ? fromJson(
+            PgJsonMap.from(value != null ? value as Map : {}) as JsonValueType,
+          )
         : fromJson(value as JsonValueType),
   );
 }

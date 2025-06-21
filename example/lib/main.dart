@@ -17,6 +17,7 @@ void main() async {
 
   final books = await booksTable.fetchModels(
     modelBuilder: Book.builder,
+    filter: BooksTable.title.equals('All About Paddington'),
     modifier: booksTable.asRaw(),
   );
 

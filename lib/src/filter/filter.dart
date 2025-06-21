@@ -1,7 +1,9 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
 
+export 'extensions/_extensions.dart';
 export 'filters/_filters.dart';
+export 'range_type.dart';
 
 /// {@template typesafe_postgrest.PgFilter}
 ///
@@ -29,4 +31,14 @@ class PgFilter<TableType> {
   @internal
   PostgrestFilterBuilder<T> build<T>(PostgrestFilterBuilder<T> builder) =>
       builder;
+
+  /// Returns a new filter with the provided [previousFilter].
+  @mustBeOverridden
+  @internal
+  PgFilter<TableType> withPreviousFilter(PgFilter<TableType> previousFilter) =>
+      PgFilter(previousFilter);
+
+  /// Chains a new filter onto the current filter chain.
+  PgFilter<TableType> and(PgFilter<TableType> other) =>
+      other.withPreviousFilter(this);
 }

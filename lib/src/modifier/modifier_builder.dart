@@ -18,9 +18,9 @@ import 'package:postgrest/postgrest.dart';
 /// [CurrentType] correctly by PgTable.
 ///
 /// {@endtemplate}
+@internal
 class PgModifierBuilder<CurrentType> {
   /// {@macro typesafe_postgrest.PgModifierBuilder}
-  @internal
   const PgModifierBuilder(this.builder);
 
   /// The postgrest builder that will generate the query.

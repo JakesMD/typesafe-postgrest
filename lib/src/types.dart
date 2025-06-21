@@ -6,4 +6,5 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 typedef PgJsonList = PostgrestList;
 typedef PgJsonMap = PostgrestMap;
-typedef PgColumnList<TableType> = List<PgColumn<TableType, dynamic, dynamic>>;
+typedef PgQueryColumnList<TableType> =
+    List<PgQueryColumn<TableType, dynamic, dynamic>>;

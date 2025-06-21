@@ -23,5 +23,5 @@ class PgModelBuilder<TableType, ModelType extends PgModel<TableType>> {
   final ModelType Function(PgJsonMap) constructor;
 
   /// The list of columns that are part of the model.
-  final PgColumnList<TableType> columns;
+  final PgQueryColumnList<TableType> columns;
 }

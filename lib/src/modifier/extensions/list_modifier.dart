@@ -1,9 +1,8 @@
-import 'package:postgrest/postgrest.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// Provides modifiers that can be chained onto a list modifier.
 ///
-/// All these methods must be added to [PgTable].
+/// All these methods must be added to [PgTableModifierX].
 ///
 /// Notice that `asModels` is missing. This is so that the user is forced to use
 /// [PgTable.fetchModels].
@@ -19,7 +18,7 @@ extension PgListModifierX<TableType>
   PgCountModifier<TableType> count(CountOption option) =>
       PgCountModifier(this, option);
 
-  /// {@macro typesafe_postgrest.PgMaybeSingleModifier}
+  /// {@macro typesafe_postgrest.PgLimitModifier}
   PgLimitModifier<TableType> limit(int limit) => PgLimitModifier(this, limit);
 
   /// {@macro typesafe_postgrest.PgMaybeSingleModifier}
