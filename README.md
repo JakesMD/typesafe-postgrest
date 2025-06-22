@@ -7,20 +7,25 @@
 - [x] ⚡️ Foolproof modifiers
 - [x] ⚡️ Custom models
 - [x] ⚡️ Zero boilerplate
-- [x] ⚡️ Maybe code generation
+- [x] ⚡️ Optional code generation
 
 
 Just provide your table:
 ``` dart
+@PgTableHere()
 class AuthorsTable extends SupabaseTable<AuthorsTable> {
   AuthorsTable(super.client) : super(tableName: tableName, primaryKey: [id]);
 
   static const tableName = PgTableName<AuthorsTable>('authors');
+
+  @PgColumnHasDefault()
   static final id = PgBigIntColumn<AuthorsTable>('id');
+
   static final name = PgStringColumn<AuthorsTable>('name');
+
   static final books = PgJoinToMany<AuthorsTable, BooksTable>(
-    id,
-    BooksTable.tableName
+    joinColumn: id,
+    joinedTableName: BooksTable.tableName,
   );
 }
 
@@ -28,6 +33,7 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
 
 Create your custom models using any of the columns in the table:
 ``` dart
+@PgModelHere()
 class Author extends PgModel<AuthorsTable> {
   Author(super.json) : super(builder: builder);
 
