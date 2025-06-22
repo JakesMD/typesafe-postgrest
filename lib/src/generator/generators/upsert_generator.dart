@@ -58,6 +58,10 @@ class PgUpsertGenerator extends GeneratorForAnnotation<PgTableHere> {
     columnInfos.sort((a, b) => a.hasDefault ? 1 : -1);
 
     buffer.writeln('''
+// Typedefs are self-documenting.
+// ignore_for_line: public_member_api_docs
+typedef ${tableClass.displayName}Insert = ${tableClass.displayName}Upsert;
+
 /// {@template ${tableClass.displayName}Upsert}
 /// 
 /// Represents the data required to perform an insert or upsert operation on the

@@ -6,6 +6,10 @@ part of 'authors_table.dart';
 // PgUpsertGenerator
 // **************************************************************************
 
+// Typedefs are self-documenting.
+// ignore_for_line: public_member_api_docs
+typedef AuthorsTableInsert = AuthorsTableUpsert;
+
 /// {@template AuthorsTableUpsert}
 ///
 /// Represents the data required to perform an insert or upsert operation on the

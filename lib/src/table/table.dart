@@ -139,9 +139,9 @@ class PgTable<TableType> {
   ///            inserted.
   Future<T> insert<T>({
     required List<PgUpsert<TableType>> inserts,
-    required PgFilter<TableType> filter,
     PgQueryColumnList<TableType>? columns,
     PgModifier<TableType, T, dynamic>? modifier,
+    PgFilter<TableType>? filter,
   }) async {
     final response = await initialQuery(_tableName)
         .insert(_getMapsFromUpserts(inserts))
@@ -166,9 +166,9 @@ class PgTable<TableType> {
   Future<List<ModelType>>
   insertAndFetchModels<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
-    required PgFilter<TableType> filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgFilter<TableType>? filter,
   }) async {
     final modelModifier = PgAsModelsModifier(
       modifier,
@@ -197,9 +197,9 @@ class PgTable<TableType> {
   ///            inserted.
   Future<ModelType> insertAndFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
-    required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgFilter<TableType>? filter,
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
@@ -226,9 +226,9 @@ class PgTable<TableType> {
   Future<ModelType?>
   insertAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
-    required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgFilter<TableType>? filter,
   }) async {
     final modelModifier = PgMaybeAsModelModifier(
       modifier,
@@ -258,9 +258,9 @@ class PgTable<TableType> {
   ///            upserted.
   Future<T> upsert<T>({
     required List<PgUpsert<TableType>> upserts,
-    required PgFilter<TableType> filter,
     PgQueryColumnList<TableType>? columns,
     PgModifier<TableType, T, dynamic>? modifier,
+    PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
@@ -295,9 +295,9 @@ class PgTable<TableType> {
   Future<List<ModelType>>
   upsertAndFetchModels<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
-    required PgFilter<TableType> filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
@@ -336,9 +336,9 @@ class PgTable<TableType> {
   ///                    inserted.
   Future<ModelType> upsertAndFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
-    required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
@@ -375,9 +375,9 @@ class PgTable<TableType> {
   Future<ModelType?>
   upsertAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
-    required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
