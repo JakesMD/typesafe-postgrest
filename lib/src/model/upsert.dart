@@ -20,5 +20,5 @@ class PgUpsert<TableType> {
   const PgUpsert(this.values);
 
   /// The values to insert or upsert.
-  final List<PgValue<TableType, dynamic>> values;
+  final PgValuesList<TableType> values;
 }

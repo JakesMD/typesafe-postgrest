@@ -30,5 +30,10 @@ void main() async {
 
   print(author.books);
 
+  await authorsTable.update<void>(
+    values: [AuthorsTable.name('Paddington')],
+    filter: AuthorsTable.name.equals('Paddington'),
+  );
+
   exit(0);
 }

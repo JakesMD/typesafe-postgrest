@@ -33,7 +33,7 @@ class PgModel<TableType> {
   PgModel.fromValues(this.values);
 
   /// The values of the columns.
-  final List<PgValue<TableType, dynamic>> values;
+  final PgValuesList<TableType> values;
 
   /// Returns the value of the given column.
   ///

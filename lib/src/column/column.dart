@@ -73,14 +73,14 @@ class PgColumn<TableType, ValueType, JsonValueType>
   /// Creates a [PgValue] from the provided [value] of the type [ValueType].
   ///
   /// This is used when inserting, upserting and updating a value.
-  PgValue<TableType, ValueType> call(ValueType value) => PgValue(name, value);
+  PgValue<TableType, ValueType, JsonValueType> call(ValueType value) =>
+      PgValue(name, value, () => toJson(value));
 
   @internal
   @override
-  PgValue<TableType, ValueType> pgValueFromJson(dynamic value) => PgValue(
-    name,
+  PgValue<TableType, ValueType, JsonValueType> pgValueFromJson(dynamic value) {
     // Note: The value can be null when filtering in referenced tables.
-    JsonValueType == PgJsonList
+    final fromJsonValue = JsonValueType == PgJsonList
         ? fromJson(
             PgJsonList.from(value != null ? value as List : [])
                 as JsonValueType,
@@ -89,6 +89,8 @@ class PgColumn<TableType, ValueType, JsonValueType>
         ? fromJson(
             PgJsonMap.from(value != null ? value as Map : {}) as JsonValueType,
           )
-        : fromJson(value as JsonValueType),
-  );
+        : fromJson(value as JsonValueType);
+
+    return PgValue(name, fromJsonValue, () => toJson(fromJsonValue));
+  }
 }

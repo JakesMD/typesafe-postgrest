@@ -35,5 +35,5 @@ abstract class PgQueryColumn<TableType, ValueType, JsonValueType> {
 
   /// Creates a [PgValue] from the provided JSON [value] using the [fromJson]
   /// function.
-  PgValue<TableType, ValueType> pgValueFromJson(dynamic value);
+  PgValue<TableType, ValueType, JsonValueType> pgValueFromJson(dynamic value);
 }
