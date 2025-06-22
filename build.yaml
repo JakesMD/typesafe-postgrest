@@ -2,14 +2,23 @@
 targets:
   $default:
     builders:
-      typesafe_postgrest|model_x:
+      typesafe_postgrest|model_x_generator:
+        enabled: true
+      typesafe_postgrest|upsert_generator:
         enabled: true
 
 builders:
-  model_x:
+  model_x_generator:
     import: "package:typesafe_postgrest/src/generator/builder.dart"
     builder_factories: ["pgModelXBuilder"]
     build_extensions: { ".dart": [".model.g.dart"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen:combining_builder"]
+  upsert_generator:
+    import: "package:typesafe_postgrest/src/generator/builder.dart"
+    builder_factories: ["pgUpsertBuilder"]
+    build_extensions: { ".dart": [".table.g.dart"] }
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen:combining_builder"]

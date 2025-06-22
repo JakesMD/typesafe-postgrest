@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:typesafe_postgrest/src/generator/generators/helpers.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// Generates an extension to a [PgModel] class.
@@ -16,13 +17,16 @@ class PgModelXGenerator extends GeneratorForAnnotation<PgModelHere> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final modelClass = _getElementAsClass(element);
+    final modelClass = getElementAsClass(
+      element,
+      const TypeChecker.fromRuntime(PgModel),
+    );
     final builderField = _getBuilderField(modelClass);
-    final builderDeclaration = await _getElementVariableDeclaration(
+    final builderDeclaration = await getElementVariableDeclaration(
       builderField,
       buildStep,
     );
-    final creationExpression = _getDeclarationCreationExpression(
+    final creationExpression = getDeclarationCreationExpression(
       builderField,
       builderDeclaration,
     );
@@ -100,28 +104,6 @@ extension Pg${modelClass.displayName}X on ${modelClass.displayName} {
     return buffer.toString();
   }
 
-  ClassElement _getElementAsClass(
-    Element element,
-  ) {
-    if (element is! ClassElement) {
-      throw InvalidGenerationSourceError(
-        '''${element.displayName} is not a class and cannot be annotated with @PgModelHere''',
-        element: element,
-      );
-    }
-
-    const modelTypeChecker = TypeChecker.fromRuntime(PgModel);
-
-    if (!modelTypeChecker.isAssignableFrom(element)) {
-      throw InvalidGenerationSourceError(
-        '''${element.displayName} does not extend PgModel  and cannot be annotated with @PgModelHere''',
-        element: element,
-      );
-    }
-
-    return element;
-  }
-
   FieldElement _getBuilderField(ClassElement modelClass) {
     const builderTypeChecker = TypeChecker.fromRuntime(PgModelBuilder);
 
@@ -136,40 +118,6 @@ extension Pg${modelClass.displayName}X on ${modelClass.displayName} {
       '''${modelClass.displayName} does not have a static field of type PgModelBuilder.''',
       element: modelClass,
     );
-  }
-
-  Future<VariableDeclaration> _getElementVariableDeclaration(
-    FieldElement element,
-    BuildStep buildStep,
-  ) async {
-    final declaration = await buildStep.resolver.astNodeFor(
-      element,
-      resolve: true,
-    );
-
-    if (declaration is! VariableDeclaration) {
-      throw InvalidGenerationSourceError(
-        '''${element.displayName} is not a variable declaration.''',
-        element: element,
-      );
-    }
-    return declaration;
-  }
-
-  InstanceCreationExpression _getDeclarationCreationExpression(
-    FieldElement element,
-    VariableDeclaration declaration,
-  ) {
-    final expression = declaration.initializer;
-
-    if (expression is! InstanceCreationExpression) {
-      throw InvalidGenerationSourceError(
-        '''${element.displayName} is not an instance creation expression.''',
-        element: element,
-      );
-    }
-
-    return expression;
   }
 
   ListLiteral _getColumnsList(
