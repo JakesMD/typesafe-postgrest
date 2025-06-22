@@ -15,9 +15,9 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 class PgJoinToOne<TableType, JoinedTableType>
     extends PgJoin<TableType, JoinedTableType> {
   ///  {@macro typesafe_postgrest.PgJoinToOne}
-  const PgJoinToOne(
-    super.joinColumn,
-    super.joinedTableName, {
+  const PgJoinToOne({
+    required super.joinColumn,
+    required super.joinedTableName,
     super.foreignKey,
   });
 
@@ -49,7 +49,11 @@ class PgJoinToOne<TableType, JoinedTableType>
 class PgMaybeJoinToOne<TableType, JoinedTableType>
     extends PgJoin<TableType, JoinedTableType> {
   /// {@macro typesafe_postgrest.PgMaybeJoinToOne}
-  PgMaybeJoinToOne(super.joinColumn, super.joinedTableName, {super.foreignKey});
+  PgMaybeJoinToOne({
+    required super.joinColumn,
+    required super.joinedTableName,
+    super.foreignKey,
+  });
 
   @override
   PgQueryColumn<TableType, ModelType?, PgJsonMap?>

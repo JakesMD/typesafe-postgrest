@@ -15,9 +15,9 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 class PgJoinToMany<TableType, JoinedTableType>
     extends PgJoin<TableType, JoinedTableType> {
   /// {@macro typesafe_postgrest.PgJoinToMany}
-  const PgJoinToMany(
-    super.joinColumn,
-    super.joinedTableName, {
+  const PgJoinToMany({
+    required super.joinColumn,
+    required super.joinedTableName,
     super.foreignKey,
   });
 

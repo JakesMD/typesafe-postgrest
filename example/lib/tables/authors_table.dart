@@ -19,7 +19,7 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
 
   /// The books written by the author.
   static final books = PgJoinToMany<AuthorsTable, BooksTable>(
-    id,
-    BooksTable.tableName,
+    joinColumn: id,
+    joinedTableName: BooksTable.tableName,
   );
 }

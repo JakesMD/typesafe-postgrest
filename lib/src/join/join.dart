@@ -19,7 +19,11 @@ export 'join_to_one.dart';
 /// {@endtemplate}
 abstract class PgJoin<TableType, JoinedTableType> {
   /// {@macro typesafe_postgrest.PgJoin}
-  const PgJoin(this.joinColumn, this.joinedTableName, {this.foreignKey});
+  const PgJoin({
+    required this.joinColumn,
+    required this.joinedTableName,
+    this.foreignKey,
+  });
 
   /// The column in the current table that creates the foreign relationship with
   /// the joined table.

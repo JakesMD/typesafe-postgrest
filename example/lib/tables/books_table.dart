@@ -25,7 +25,7 @@ class BooksTable extends SupabaseTable<BooksTable> {
 
   /// The author of the book.
   static final author = PgJoinToOne<BooksTable, AuthorsTable>(
-    BooksTable.authorID,
-    AuthorsTable.tableName,
+    joinColumn: BooksTable.authorID,
+    joinedTableName: AuthorsTable.tableName,
   );
 }
