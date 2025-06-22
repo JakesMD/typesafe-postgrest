@@ -10,7 +10,7 @@
 - [x] ⚡️ Optional code generation
 
 
-Just provide your table:
+### Define your tables
 ``` dart
 @PgTableHere()
 class AuthorsTable extends SupabaseTable<AuthorsTable> {
@@ -28,10 +28,9 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
     joinedTableName: BooksTable.tableName,
   );
 }
-
 ```
 
-Create your custom models using any of the columns in the table:
+### Define your models
 ``` dart
 @PgModelHere()
 class Author extends PgModel<AuthorsTable> {
@@ -48,12 +47,29 @@ class Author extends PgModel<AuthorsTable> {
 }
 ```
 
-Generate a tiny amount of code (you can even just write it yourself):
+### Generate a few lines of code
+Run the following command:
 ``` shell
 dart run build_runner build
 ```
+Which generates the following code:
+``` dart
+extension PgAuthorX on Author {
+  BigInt get id => value(AuthorsTable.id);
+  String get name => value(AuthorsTable.name);
+  List<AuthorBook> get books => value(AuthorsTable.books(AuthorBook.builder));
+}
+```
+``` dart
+typedef AuthorsTableInsert = AuthorsTableUpsert;
 
-And fetch your data:
+class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
+  AuthorsTableUpsert({required String name, BigInt? id})
+    : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
+}
+```
+
+### Use it!
 ``` dart
 final authorsTable = AuthorsTable(supabaseClient);
 
