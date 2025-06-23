@@ -52,7 +52,10 @@ Run the following command:
 ``` shell
 dart run build_runner build
 ```
-Which generates the following code:
+
+<details>
+<summary>(Toggle to view the generated code)</summary>
+
 ``` dart
 extension PgAuthorX on Author {
   BigInt get id => value(AuthorsTable.id);
@@ -68,6 +71,9 @@ class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
     : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
 }
 ```
+---
+
+</details>
 
 ### Use it!
 ``` dart
