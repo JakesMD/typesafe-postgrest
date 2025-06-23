@@ -1,15 +1,14 @@
 # typesafe-postgrest
+A dart package that enables type-safe PostgREST queries.
 
-> 🚧 **WIP!** This package is still under development. The example below is what the API currently looks like.
-
+## ✨ Features
 - [x] ⚡️ Typesafe queries
-- [x] ⚡️ Foolproof filters
-- [x] ⚡️ Foolproof modifiers
 - [x] ⚡️ Custom models
-- [x] ⚡️ Zero boilerplate
-- [x] ⚡️ Optional code generation
+- [x] ⚡️ Minimal boilerplate
+- [x] ⚡️ Minimal code generation
+- [x] ⚡️ Supabase integration with `typesafe_supabase`
 
-
+## 😉 Sneak peek
 ### Define your tables
 ``` dart
 @PgTableHere()
@@ -47,13 +46,13 @@ class Author extends PgModel<AuthorsTable> {
 }
 ```
 
-### Generate a few lines of code
-Run the following command:
+### Generate a tiny piece of code
 ``` shell
 dart run build_runner build
 ```
 
 <details>
+  
 <summary>(Toggle to view the generated code)</summary>
 
 ``` dart
@@ -71,7 +70,6 @@ class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
     : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
 }
 ```
----
 
 </details>
 
@@ -87,7 +85,250 @@ final author = await authorsTable.fetchModel(
 print(author.books);
 ```
 
-## Contributing
+---
+
+# 🚀 Getting started
+
+## 📦 Installing
+
+Choose the package that best fits your needs and add it to your `pubspec.yaml`:
+
+  * **`typesafe_postgrest`**: For generic PostgreSQL databases.
+
+    ``` bash
+    dart pub add typesafe_postgrest
+    ```
+  * **`typesafe_supabase`**: An extension of `typesafe_postgrest` with features specifically tailored for Supabase.
+
+    ``` bash
+    dart pub add typesafe_supabase
+    ```
+    
+---
+
+## 🗄️ Defining your database tables
+
+To leverage type-safety, you'll need to replicate your PostgreSQL table schemas within your Dart code.
+
+### Creating the table class
+
+You define a table by extending `PgTable` (or `SupabaseTable` for Supabase projects). The `@PgTableHere()` annotation tells the code generator to process this class.
+
+```dart
+// authors.dart
+
+part 'authors.g.dart';
+
+@PgTableHere() // Marks this class for code generation
+class AuthorsTable extends PgTable<AuthorsTable> {
+  AuthorsTable()
+      : super(
+          tableName: tableName,
+          initialQuery: (tableName) => yourPostgresClient.from(tableName),
+        );
+
+  // Define the actual table name from your Postgres database.
+  // It's static so other tables can easily reference it for joins.
+  static const tableName = PgTableName<AuthorsTable>('authors');
+}
+```
+
+#### For Supabase users:
+
+`SupabaseTable` simplifies the setup by taking your Supabase client and primary key(s):
+
+```dart
+// authors.dart
+
+part 'authors.g.dart';
+
+@PgTableHere()
+class AuthorsTable extends SupabaseTable<AuthorsTable> {
+  AuthorsTable(super.client) : super(tableName: tableName, primaryKey: [id]);
+
+  static const tableName = PgTableName<AuthorsTable>('authors');
+}
+```
+
+### Adding columns
+
+Representing your table columns is straightforward. Each column gets a static final field in your table class:
+
+```dart
+class AuthorsTable extends PgTable<AuthorsTable> {
+  // ... existing code ...
+
+  static final name = PgStringColumn<AuthorsTable>('name');
+}
+```
+
+For columns with a default value in your PostgreSQL database, simply add the `@PgColumnHasDefault()` annotation:
+
+```dart
+class AuthorsTable extends PgTable<AuthorsTable> {
+  // ... existing code ...
+
+  @PgColumnHasDefault()
+  static final id = PgBigIntColumn<AuthorsTable>('id');
+}
+```
+
+#### Built-in column types
+
+`typesafe_postgrest` provides a wide range of common column types out of the box, handling nullability automatically:
+
+  * `PgBigIntColumn` (`BigInt`)
+  * `PgMaybeBigIntColumn` (`BigInt?`)
+  * `PgStringColumn` (`String`)
+  * `PgMaybeStringColumn` (`String?`)
+  * ...and many more for various data types like booleans, dates, numbers, and JSON.
+
+#### Custom column types
+
+If you have a custom data type (e.g., an enum) that isn't covered by the built-in types, you can define your own `PgColumn` and provide `fromJson` and `toJson` methods for serialization:
+
+```dart
+class AuthorsTable extends PgTable<AuthorsTable> {
+  // ... existing code ...
+
+  static final fame = PgColumn<AuthorsTable, FameEnum, String>(
+    'fame',
+    fromJson: FameEnum.parse,
+    toJson: (value) => value.name,
+  );
+}
+```
+
+### Defining table joins
+
+Relational databases thrive on relationships, and `typesafe_postgrest` makes it easy to define joins between your tables.
+
+  * **Many-to-Many or One-to-Many Joins**: Use `PgJoinToMany`.
+
+    ```dart
+    class AuthorsTable extends PgTable<AuthorsTable> {
+      // ... existing code ...
+
+      static final books = PgJoinToMany<AuthorsTable, BooksTable>(
+        joinColumn: id, // The column in AuthorsTable that links to BooksTable
+        joinedTableName: BooksTable.tableName,
+      );
+    }
+    ```
+
+  * **One-to-One or Many-to-One Joins**: Use `PgJoinToOne`.
+
+In some cases, especially with complex relationships, you might need to explicitly specify the foreign key:
+
+```dart
+class AuthorsTable extends PgTable<AuthorsTable> {
+  // ... existing code ...
+
+  static final books = PgJoinToMany<AuthorsTable, BooksTable>(
+    joinColumn: id,
+    joinedTableName: BooksTable.tableName,
+    foreignKey: 'books_author_id_fkey', // Explicitly define the foreign key name
+  );
+}
+```
+
+---
+
+## 📄 Defining your data models
+
+While your table definitions map directly to your database schema, you often don't need every column for every operation. **Models** allow you to define subsets of columns, ensuring you only fetch and work with the data you need.
+
+### Creating a model class
+
+Extend `PgModel` and annotate it with `@PgModelHere()`:
+
+```dart
+// author.dart
+
+part 'author.g.dart';
+
+@PgModelHere()
+class Author extends PgModel<AuthorsTable> {
+  Author(super.json) : super(builder: builder);
+
+  static final builder = PgModelBuilder<AuthorsTable, Author>(
+    constructor: Author.new,
+    columns: [
+      AuthorsTable.id,
+      AuthorsTable.name,
+    ],
+  );
+}
+```
+
+### Including joined models
+
+For joined relationships, you can even include models within models, creating rich data structures:
+
+```dart
+class AuthorWithBooks extends PgModel<AuthorsTable> {
+  AuthorWithBooks(super.json) : super(builder: builder);
+
+  static final builder = PgModelBuilder<AuthorsTable, AuthorWithBooks>(
+    constructor: AuthorWithBooks.new,
+    columns: [
+      AuthorsTable.name,
+      // Include the 'books' join, specifying the model builder for the joined books
+      AuthorsTable.books(AuthorBook.builder),
+    ],
+  );
+}
+
+// Define AuthorBook as a separate model for the 'books' table in a separate file.
+@PgModelHere()
+class AuthorBook extends PgModel<BooksTable> {
+  AuthorBook(super.json) : super(builder: builder);
+
+  static final builder = PgModelBuilder<BooksTable, AuthorBook>(
+    constructor: AuthorBook.new,
+    columns: [BooksTable.id, BooksTable.title],
+  );
+}
+```
+
+---
+
+## ⚙️ Generating the helpers
+
+Once you've defined your `PgTable` and `PgModel` classes, you need to run the code generator to create the necessary extensions and helper classes.
+
+### Add the `part` directive
+
+For each file where you've defined a table or model (e.g., `authors_table.dart`, `author_model.dart`), you **must** add the `part` directive at the top. This tells the Dart build system where to generate the companion code. The generated file name typically follows the pattern `your_file_name.g.dart`.
+
+For example, if your table definition is in `authors_table.dart` and your model is in `author_model.dart`:
+
+```dart
+// authors_table.dart
+
+import 'package:typesafe_postgrest/typesafe_postgrest.dart';
+part 'authors_table.g.dart'; // <--- Add this line
+```
+```dart
+// author_model.dart
+
+import 'package:typesafe_postgrest/typesafe_postgrest.dart';
+part 'author_model.g.dart'; // <--- Add this line
+```
+
+### Run the code generator
+
+Execute the following command in your project's root directory:
+
+``` bash
+dart run build_runner build
+```
+
+This command triggers the code generation process. You should see new files created (e.g., `authors_table.g.dart`, `author_model.g.dart`) in the same directories as your original files.
+
+---
+
+# Contributing
 Contributions are welcome! Please open an issue or submit a pull request.
 
 Especially looking for:
