@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:typesafe_postgrest/src/filter/filter.dart';
 import 'package:typesafe_postgrest/src/modifier/modifier.dart';
@@ -17,9 +18,12 @@ class PgTable<TableType> {
   PgTable({
     required PgTableName<TableType> tableName,
     required this.initialQuery,
-  }) : _tableName = tableName.name;
+  }) : $tableName = tableName.name;
 
-  final String _tableName;
+  @internal
+  // This is internal.
+  // ignore: public_member_api_docs
+  final String $tableName;
 
   /// The initial query to the database which allows the table to perform
   /// select, insert, update, and delete operations.
@@ -46,7 +50,7 @@ class PgTable<TableType> {
     required PgModifier<TableType, T, dynamic> modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .select(_getQueryPattern(columns))
         .applyPgFilter(filter)
         .applyPgModifier(modifier);
@@ -63,7 +67,7 @@ class PgTable<TableType> {
   /// [modifier] The modifier to apply to the query.
   Future<List<ModelType>> fetchModels<ModelType extends PgModel<TableType>>({
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
     final modelModifier = PgAsModelsModifier(
@@ -71,7 +75,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .select(_getQueryPattern(modelBuilder.columns))
         .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
@@ -93,7 +97,7 @@ class PgTable<TableType> {
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .select(_getQueryPattern(modelBuilder.columns))
         .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
@@ -118,7 +122,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .select(_getQueryPattern(modelBuilder.columns))
         .applyPgFilter(filter)
         .applyPgModifier(modelModifier);
@@ -143,7 +147,7 @@ class PgTable<TableType> {
     PgModifier<TableType, T, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
         .applyPgFilter(filter)
         .select(_getQueryPattern(columns ?? const []))
@@ -167,7 +171,7 @@ class PgTable<TableType> {
   insertAndFetchModels<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
     final modelModifier = PgAsModelsModifier(
@@ -175,7 +179,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -203,7 +207,7 @@ class PgTable<TableType> {
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -235,7 +239,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -264,7 +268,7 @@ class PgTable<TableType> {
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .upsert(
           _getMapsFromUpserts(upserts),
           onConflict: onConflict,
@@ -296,7 +300,7 @@ class PgTable<TableType> {
   upsertAndFetchModels<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
@@ -306,7 +310,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .upsert(
           _getMapsFromUpserts(upserts),
           onConflict: onConflict,
@@ -344,7 +348,7 @@ class PgTable<TableType> {
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .upsert(
           _getMapsFromUpserts(upserts),
           onConflict: onConflict,
@@ -386,7 +390,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .upsert(
           _getMapsFromUpserts(upserts),
           onConflict: onConflict,
@@ -416,7 +420,7 @@ class PgTable<TableType> {
     PgQueryColumnList<TableType>? columns,
     PgModifier<TableType, T, dynamic>? modifier,
   }) async {
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
         .applyPgFilter(filter)
         .select(_getQueryPattern(columns ?? const []))
@@ -441,14 +445,14 @@ class PgTable<TableType> {
     required PgValuesList<TableType> values,
     required PgFilter<TableType> filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
     final modelModifier = PgAsModelsModifier(
       modifier,
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -476,7 +480,7 @@ class PgTable<TableType> {
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -508,7 +512,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -531,7 +535,7 @@ class PgTable<TableType> {
     PgQueryColumnList<TableType>? columns,
     PgModifier<TableType, T, dynamic>? modifier,
   }) async {
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .delete()
         .applyPgFilter(filter)
         .select(_getQueryPattern(columns ?? const []))
@@ -553,14 +557,14 @@ class PgTable<TableType> {
   deleteAndFetchModels<ModelType extends PgModel<TableType>>({
     required PgFilter<TableType> filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonList, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
     final modelModifier = PgAsModelsModifier(
       modifier,
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .delete()
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -585,7 +589,7 @@ class PgTable<TableType> {
   }) async {
     final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .delete()
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -614,7 +618,7 @@ class PgTable<TableType> {
       modelBuilder.constructor,
     );
 
-    final response = await initialQuery(_tableName)
+    final response = await initialQuery($tableName)
         .delete()
         .applyPgFilter(filter)
         .select(_getQueryPattern(modelBuilder.columns))
