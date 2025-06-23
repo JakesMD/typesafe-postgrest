@@ -89,13 +89,14 @@ class PgTable<TableType> {
   ///
   /// [filter] The filter to apply to the query.
   ///
-  /// [modifier] The modifier to apply to the query.
+  /// [modifier] The modifier to apply to the query. The limit(1).single()
+  ///            modifiers are applied for you.
   Future<ModelType> fetchModel<ModelType extends PgModel<TableType>>({
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
+    final modelModifier = _getAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -111,16 +112,14 @@ class PgTable<TableType> {
   ///
   /// [filter] The filter to apply to the query.
   ///
-  /// [modifier] The modifier to apply to the query.
+  /// [modifier] The modifier to apply to the query. The limit(1).maybeSingle()
+  ///            modifiers are applied for you.
   Future<ModelType?> maybeFetchModel<ModelType extends PgModel<TableType>>({
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final modelModifier = PgMaybeAsModelModifier(
-      modifier,
-      modelBuilder.constructor,
-    );
+    final modelModifier = _getMaybeAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .select(_getQueryPattern(modelBuilder.columns))
@@ -198,14 +197,14 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was inserted.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            inserted.
+  ///            inserted. The limit(1).single() modifiers are applied for you.
   Future<ModelType> insertAndFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
+    final modelModifier = _getAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
@@ -226,18 +225,16 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was inserted.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            inserted.
+  ///            inserted. The limit(1).maybeSingle() modifiers are applied for
+  ///            you.
   Future<ModelType?>
   insertAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> inserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
   }) async {
-    final modelModifier = PgMaybeAsModelModifier(
-      modifier,
-      modelBuilder.constructor,
-    );
+    final modelModifier = _getMaybeAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .insert(_getMapsFromUpserts(inserts))
@@ -334,19 +331,19 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was upserted.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            upserted.
+  ///            upserted. The limit(1).single() modifiers are applied for you.
   ///
   /// [ignoreDuplicates] Specifies if duplicate rows should be ignored and not
   ///                    inserted.
   Future<ModelType> upsertAndFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
-    final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
+    final modelModifier = _getAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .upsert(
@@ -372,7 +369,8 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was upserted.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            upserted.
+  ///            upserted. The limit(1).maybeSingle() modifiers are applied for
+  ///            you.
   ///
   /// [ignoreDuplicates] Specifies if duplicate rows should be ignored and not
   ///                    inserted.
@@ -380,15 +378,12 @@ class PgTable<TableType> {
   upsertAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required List<PgUpsert<TableType>> upserts,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
     PgFilter<TableType>? filter,
     String? onConflict,
     bool ignoreDuplicates = false,
   }) async {
-    final modelModifier = PgMaybeAsModelModifier(
-      modifier,
-      modelBuilder.constructor,
-    );
+    final modelModifier = _getMaybeAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .upsert(
@@ -471,14 +466,14 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was updated.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            updated.
+  ///            updated. The limit(1).single() modifiers are applied for you.
   Future<ModelType> updateAndFetchModel<ModelType extends PgModel<TableType>>({
     required PgValuesList<TableType> values,
     required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
-    final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
+    final modelModifier = _getAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
@@ -499,18 +494,16 @@ class PgTable<TableType> {
   /// [filter] The filter to apply to the query when fetching what was updated.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            updated.
+  ///            updated. The limit(1).maybeSingle() modifiers are applied for
+  ///            you.
   Future<ModelType?>
   updateAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required PgValuesList<TableType> values,
     required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
-    final modelModifier = PgMaybeAsModelModifier(
-      modifier,
-      modelBuilder.constructor,
-    );
+    final modelModifier = _getMaybeAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .update(_getMapFromValues(values))
@@ -581,13 +574,13 @@ class PgTable<TableType> {
   /// [modelBuilder] The builder of the model to return.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            deleted.
+  ///            deleted. The limit(1).single() modifiers are applied for you.
   Future<ModelType> deleteAndFetchModel<ModelType extends PgModel<TableType>>({
     required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
-    final modelModifier = PgAsModelModifier(modifier, modelBuilder.constructor);
+    final modelModifier = _getAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .delete()
@@ -606,17 +599,15 @@ class PgTable<TableType> {
   /// [modelBuilder] The builder of the model to return.
   ///
   /// [modifier] The modifier to apply to the query when fetching what was
-  ///            deleted.
+  ///            deleted. The limit(1).maybeSingle() modifiers are applied for
+  ///            you.
   Future<ModelType?>
   deleteAndMaybeFetchModel<ModelType extends PgModel<TableType>>({
     required PgFilter<TableType>? filter,
     required PgModelBuilder<TableType, ModelType> modelBuilder,
-    required PgModifier<TableType, PgJsonMap?, dynamic> modifier,
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
   }) async {
-    final modelModifier = PgMaybeAsModelModifier(
-      modifier,
-      modelBuilder.constructor,
-    );
+    final modelModifier = _getMaybeAsModelModifier(modifier, modelBuilder);
 
     final response = await initialQuery($tableName)
         .delete()
@@ -660,4 +651,22 @@ class PgTable<TableType> {
   Map<String, dynamic> _getMapFromValues(PgValuesList<TableType> values) => {
     for (final value in values) value.columnName: value.toJson(),
   };
+
+  PgAsModelModifier<TableType, ModelType>
+  _getAsModelModifier<ModelType extends PgModel<TableType>>(
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
+    PgModelBuilder<TableType, ModelType> modelBuilder,
+  ) => PgAsModelModifier(
+    PgLimitModifier(modifier, 1).single(),
+    modelBuilder.constructor,
+  );
+
+  PgMaybeAsModelModifier<TableType, ModelType>
+  _getMaybeAsModelModifier<ModelType extends PgModel<TableType>>(
+    PgModifier<TableType, PgJsonList, dynamic>? modifier,
+    PgModelBuilder<TableType, ModelType> modelBuilder,
+  ) => PgMaybeAsModelModifier(
+    PgLimitModifier(modifier, 1).maybeSingle(),
+    modelBuilder.constructor,
+  );
 }

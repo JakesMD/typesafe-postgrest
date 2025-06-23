@@ -18,14 +18,13 @@ void main() async {
   final books = await booksTable.fetchModels(
     modelBuilder: Book.builder,
     filter: BooksTable.title.equals('All About Paddington'),
-    modifier: booksTable.asRaw(),
   );
 
   print(books);
 
   final author = await authorsTable.fetchModel(
     modelBuilder: Author.builder,
-    modifier: authorsTable.limit(1).single(),
+    filter: AuthorsTable.id.equals(BigInt.one),
   );
 
   print(author.books);
