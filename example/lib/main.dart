@@ -5,7 +5,7 @@ import 'package:example/secrets.dart';
 import 'package:example/tables/authors_table.dart';
 import 'package:example/tables/books_table.dart';
 import 'package:supabase/supabase.dart';
-import 'package:typesafe_postgrest/typesafe_postgrest.dart';
+import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 void main() async {
   final supabaseClient = SupabaseClient(

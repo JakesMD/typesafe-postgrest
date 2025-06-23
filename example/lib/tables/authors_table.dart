@@ -1,5 +1,4 @@
 import 'package:example/tables/books_table.dart';
-import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 part 'authors_table.g.dart';
