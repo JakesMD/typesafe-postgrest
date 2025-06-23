@@ -8,8 +8,10 @@ extension PgPostgrestTransformBuilderX
   /// Applies the provided [PgModifier] to the transform builder.
   PostgrestBuilder<dynamic, dynamic, dynamic>
   applyPgModifier<TableType, CurrentType, PreviousType>(
-    PgModifier<TableType, CurrentType, PreviousType> modifier,
+    PgModifier<TableType, CurrentType, PreviousType>? modifier,
   ) {
+    if (modifier == null) return this;
+
     final modifiers = <PgModifier<TableType, dynamic, dynamic>>[];
 
     PgModifier<TableType, dynamic, dynamic>? current = modifier;
