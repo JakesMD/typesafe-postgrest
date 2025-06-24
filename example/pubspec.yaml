@@ -8,9 +8,7 @@ dependencies:
   typesafe_postgrest:
     git: https://github.com/JakesMD/typesafe-postgrest.git
   typesafe_supabase:
-    git:
-      url: https://github.com/JakesMD/typesafe-supabase.git
-      ref: beta
+    git: https://github.com/JakesMD/typesafe-supabase.git
 
 dev_dependencies:
   very_good_analysis: ^9.0.0
