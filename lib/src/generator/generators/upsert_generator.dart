@@ -37,19 +37,23 @@ class PgUpsertGenerator extends GeneratorForAnnotation<PgTableHere> {
 
       final staticType = creationExpression.staticType;
 
-      if (staticType is! InterfaceType) continue;
-
-      final superclass =
-          (creationExpression.staticType! as InterfaceType).superclass;
-
-      if (superclass == null || superclass.typeArguments.length < 2) {
+      if (staticType is! InterfaceType || staticType.superclass == null) {
         continue;
+      }
+
+      var type = '';
+
+      if (staticType.superclass!.typeArguments.length < 2) {
+        if (staticType.typeArguments.length < 2) continue;
+        type = staticType.typeArguments[1].toString();
+      } else {
+        type = staticType.superclass!.typeArguments[1].toString();
       }
 
       columnInfos.add(
         _ColumnInfo(
           columnField.displayName,
-          superclass.typeArguments[1].toString(),
+          type,
           _hasDefaultAnnotation(columnField),
         ),
       );

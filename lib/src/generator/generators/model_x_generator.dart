@@ -37,22 +37,28 @@ class PgModelXGenerator extends GeneratorForAnnotation<PgModelHere> {
 
     for (final elementInList in columnsList.elements) {
       if (elementInList is PrefixedIdentifier) {
-        if (elementInList.staticType is! InterfaceType) continue;
+        if (elementInList.staticElement == null) continue;
 
-        final superclass =
-            (elementInList.staticType! as InterfaceType).superclass;
+        final staticType = elementInList.staticType;
 
-        if (elementInList.staticElement == null ||
-            superclass == null ||
-            superclass.typeArguments.length < 2) {
+        if (staticType is! InterfaceType || staticType.superclass == null) {
           continue;
+        }
+
+        var type = '';
+
+        if (staticType.superclass!.typeArguments.length < 2) {
+          if (staticType.typeArguments.length < 2) continue;
+          type = staticType.typeArguments[1].toString();
+        } else {
+          type = staticType.superclass!.typeArguments[1].toString();
         }
 
         columnInfos.add(
           _ColumnInfo(
             elementInList.staticElement!.displayName,
             elementInList.name,
-            superclass.typeArguments[1].toString(),
+            type,
           ),
         );
       } else if (elementInList is Expression) {

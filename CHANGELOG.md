@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1 - 24.06.25
+- 🐛 Fix generator not working for columns
+
 ## 0.1.0 - 24.06.25
 - ✨ Add `fetchValues`, `fetchValue` and `maybeFetchValue`
 
