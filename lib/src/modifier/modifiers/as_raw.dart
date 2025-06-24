@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
-import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// {@template typesafe_postgrest.PgAsRawModifier}
@@ -16,7 +15,7 @@ class PgAsRawModifier<TableType>
 
   @override
   @internal
-  PgModifierBuilder<PgJsonList> build(
+  PostgrestTransformBuilder<PgJsonList> build(
     PostgrestTransformBuilder<PgJsonList> builder,
-  ) => PgModifierBuilder(builder);
+  ) => builder;
 }

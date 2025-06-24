@@ -23,8 +23,7 @@ extension PgPostgrestTransformBuilderX
 
     return modifiers.fold<PostgrestBuilder<dynamic, dynamic, dynamic>>(
       this,
-      (prev, modifier) =>
-          modifier.build(prev as PostgrestTransformBuilder).builder,
+      (prev, modifier) => modifier.build(prev as PostgrestTransformBuilder),
     );
   }
 }

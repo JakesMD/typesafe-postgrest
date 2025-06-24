@@ -1,10 +1,8 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
-import 'package:typesafe_postgrest/src/modifier/modifier_builder.dart';
 
 export 'extensions/_extensions.dart';
 export 'extensions/postgrest_transform_builder.dart';
-export 'modifier_builder.dart';
 export 'modifiers/_modifiers.dart';
 
 /// {@template typesafe_postgrest.PgModifier}
@@ -37,7 +35,7 @@ class PgModifier<TableType, CurrentType, PreviousType> {
   /// Cascades the modifier onto the provided [builder].
   @mustBeOverridden
   @internal
-  PgModifierBuilder<CurrentType> build(
+  PostgrestBuilder<CurrentType, dynamic, dynamic> build(
     PostgrestTransformBuilder<PreviousType> builder,
-  ) => PgModifierBuilder(builder);
+  ) => throw UnimplementedError();
 }

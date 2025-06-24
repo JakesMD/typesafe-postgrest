@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
-import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// {@template typesafe_postgrest.PgCountModifier}
@@ -28,7 +27,10 @@ class PgCountModifier<TableType>
 
   @override
   @internal
-  PgModifierBuilder<PostgrestResponse<PgJsonList>> build(
-    PostgrestTransformBuilder<PgJsonList> builder,
-  ) => PgModifierBuilder(builder.count(option));
+  ResponsePostgrestBuilder<
+    PostgrestResponse<PgJsonList>,
+    PgJsonList,
+    PgJsonList
+  >
+  build(PostgrestTransformBuilder<PgJsonList> builder) => builder.count(option);
 }

@@ -365,7 +365,7 @@ Fetching data is at the core of any application. You have several options for re
   * **`fetchModel()`**: Fetches a single record and maps it to your `PgModel`. It will throw an error if no records are found.
 
     ```dart
-    // Fetch a single Author model (throws if not exactly one)
+    // Fetch a single Author model
     Author author = await authorsTable.fetchModel(modelBuilder: Author.builder);
     ```
 
@@ -377,6 +377,30 @@ Fetching data is at the core of any application. You have several options for re
       modelBuilder: Author.builder,
     );
     ```
+
+  * **`fetchValues()`**: Retrieves a list of values from a single column, ensuring type safety.
+
+    ```dart
+    // Fetch a list of author names
+    List<String> names = await authorsTable.fetchValues(
+      column: AuthorsTable.name,
+    );
+    ```
+
+  * **`fetchValue()`**: Fetches a single value from a single column. It will throw an error if no records are found.
+
+    ```dart
+    // Fetch a single author name
+    String name = await authorsTable.fetchValue(column: AuthorsTable.name);
+    ```
+
+  * **`maybeFetchValue()`**: Similar to `fetchValue()`, but returns `null` if no record is found, making it safer for potentially absent data.
+
+    ```dart
+    // Fetch a single author name, returns null if not found
+    String? name = await authorsTable.maybeFetchValue(column: AuthorsTable.name);
+    ```
+    
 
 ### Applying filters
 
@@ -441,6 +465,7 @@ Author insertedAuthor = await authorsTable.insertAndFetchModel(
   modelBuilder: Author.builder,
 );
 
+// insertAndFetchValues, insertAndFetchValue, insertAndMaybeFetchValue,
 // insertAndFetchModels and insertAndMaybeFetchModel also exist.
 ```
 
@@ -467,6 +492,7 @@ await authorsTable.upsert<void>(
   upserts: [AuthorsTableUpsert(id: BigInt.one, name: 'Willard Price')],
 );
 
+// upsertAndFetchValues, upsertAndFetchValue, upsertAndMaybeFetchValue,
 // upsertAndFetchModels, upsertAndFetchModel and upsertAndMaybeFetchModel also exist.
 ```
 
@@ -481,6 +507,7 @@ await authorsTable.update<void>(
   filter: AuthorsTable.name.equals('Michael Bond'), // Selects rows to update
 );
 
+// updateAndFetchValues, updateAndFetchValue, updateAndMaybeFetchValue,
 // updateAndFetchModels, updateAndFetchModel and updateAndMaybeFetchModel also exist.
 ```
 
@@ -494,6 +521,7 @@ await authorsTable.delete<void>(
   filter: AuthorsTable.name.equals('Michael Bond'),
 );
 
+// deleteAndFetchValues, deleteAndFetchValue, deleteAndMaybeFetchValue,
 // deleteAndFetchModels, deleteAndFetchModel and deleteAndMaybeFetchModel also exist.
 ```
 

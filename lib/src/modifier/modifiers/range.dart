@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
-import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// {@template typesafe_postgrest.PgRangeModifier}
@@ -26,7 +25,7 @@ class PgRangeModifier<TableType>
 
   @override
   @internal
-  PgModifierBuilder<PgJsonList> build(
+  PostgrestTransformBuilder<PgJsonList> build(
     PostgrestTransformBuilder<PgJsonList> builder,
-  ) => PgModifierBuilder(builder.range(from, to));
+  ) => builder.range(from, to);
 }

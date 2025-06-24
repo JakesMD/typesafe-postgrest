@@ -5,12 +5,6 @@ extension PgTableModifierX<TableType> on PgTable<TableType> {
   /// {@macro typesafe_postgrest.PgAsCSVModifier}
   PgAsCSVModifier<TableType> asCSV() => PgAsCSVModifier(null);
 
-  /// {@macro typesafe_postgrest.PgAsModelsModifier}
-  PgAsModelsModifier<TableType, ModelType>
-  asModels<ModelType extends PgModel<TableType>>(
-    ModelType Function(PgJsonMap) fromJson,
-  ) => PgAsModelsModifier(null, fromJson);
-
   /// {@macro typesafe_postgrest.PgAsRawModifier}
   PgAsRawModifier<TableType> asRaw() => PgAsRawModifier(null);
 

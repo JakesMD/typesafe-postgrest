@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:postgrest/postgrest.dart';
-import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 /// {@template typesafe_postgrest.PgSingleModifier}
@@ -17,7 +16,7 @@ class PgSingleModifier<TableType>
 
   @override
   @internal
-  PgModifierBuilder<PgJsonMap> build(
+  PostgrestTransformBuilder<PgJsonMap> build(
     PostgrestTransformBuilder<PgJsonList> builder,
-  ) => PgModifierBuilder(builder.single());
+  ) => builder.single();
 }

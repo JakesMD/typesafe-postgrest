@@ -15,7 +15,7 @@ class PgAsCSVModifier<TableType>
 
   @override
   @internal
-  PgModifierBuilder<String> build(
+  PostgrestTransformBuilder<String> build(
     PostgrestTransformBuilder<dynamic> builder,
-  ) => PgModifierBuilder(builder.csv());
+  ) => builder.csv();
 }

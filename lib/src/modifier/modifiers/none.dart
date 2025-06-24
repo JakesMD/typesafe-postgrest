@@ -17,7 +17,7 @@ class PgNoneModifier<TableType> extends PgModifier<TableType, void, void> {
 
   @override
   @internal
-  PgModifierBuilder<void> build(
+  PostgrestTransformBuilder<void> build(
     PostgrestTransformBuilder<void> builder,
-  ) => PgModifierBuilder(builder);
+  ) => builder;
 }
