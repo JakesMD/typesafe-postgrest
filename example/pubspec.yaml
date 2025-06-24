@@ -5,10 +5,8 @@ environment:
 
 dependencies:
   supabase: ^2.8.0
-  typesafe_postgrest:
-    git: https://github.com/JakesMD/typesafe-postgrest.git
-  typesafe_supabase:
-    git: https://github.com/JakesMD/typesafe-supabase.git
+  typesafe_postgrest: ^0.0.1
+  typesafe_supabase: ^0.0.1
 
 dev_dependencies:
   very_good_analysis: ^9.0.0
