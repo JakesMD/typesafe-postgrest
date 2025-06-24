@@ -1,6 +1,6 @@
 name: typesafe_postgrest
 description: A dart package that enables type-safe PostgREST queries.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/JakesMD/typesafe-postgrest
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   analyzer: ^7.4.5
   build: ^2.5.3
-  meta: ^1.17.0
+  meta: ^1.16.0
   postgrest: ^2.4.2
   source_gen: ^2.0.0
 
