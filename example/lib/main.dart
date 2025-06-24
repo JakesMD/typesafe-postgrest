@@ -29,15 +29,5 @@ void main() async {
 
   print(author.books);
 
-  await booksTable.insert<void>(
-    inserts: [
-      BooksTableInsert(
-        title: 'Hello',
-        authorID: BigInt.one,
-        pages: const PgNullable(500),
-      ),
-    ],
-  );
-
   exit(0);
 }
