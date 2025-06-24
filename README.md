@@ -101,8 +101,9 @@ Choose the package that best fits your needs and add it to your `pubspec.yaml`:
   * **[`typesafe_supabase`](https://github.com/JakesMD/typesafe-supabase)**: An extension of `typesafe_postgrest` with features specifically tailored for Supabase.
 
     ``` bash
-    dart pub add typesafe_supabase
+    dart pub add typesafe_supabase && dart pub add dev:typesafe_postgrest
     ```
+    (Add `typesafe_postgrest` as a dev dependency to ensure the code generator is included in the build.)
     
 ---
 
