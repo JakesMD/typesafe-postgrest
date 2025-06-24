@@ -6,7 +6,7 @@ A dart package that enables type-safe PostgREST queries.
 - [x] ⚡️ Custom models
 - [x] ⚡️ Minimal boilerplate
 - [x] ⚡️ Minimal code generation
-- [x] ⚡️ Supabase integration with `typesafe_supabase`
+- [x] ⚡️ Supabase integration with [`typesafe_supabase`](https://github.com/JakesMD/typesafe-supabase)
 
 ## 😉 Sneak peek
 ### Define your tables
@@ -98,7 +98,7 @@ Choose the package that best fits your needs and add it to your `pubspec.yaml`:
     ``` bash
     dart pub add typesafe_postgrest
     ```
-  * **`typesafe_supabase`**: An extension of `typesafe_postgrest` with features specifically tailored for Supabase.
+  * **[`typesafe_supabase`](https://github.com/JakesMD/typesafe-supabase)**: An extension of `typesafe_postgrest` with features specifically tailored for Supabase.
 
     ``` bash
     dart pub add typesafe_supabase
