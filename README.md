@@ -66,8 +66,11 @@ extension PgAuthorX on Author {
 typedef AuthorsTableInsert = AuthorsTableUpsert;
 
 class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
-  AuthorsTableUpsert({required String name, BigInt? id})
+  AuthorsTableUpsert({required this.name, this.id})
     : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
+
+  final String name;
+  final BigInt? id;
 }
 ```
 

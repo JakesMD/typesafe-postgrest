@@ -79,7 +79,7 @@ class ${tableClass.displayName}Upsert extends PgUpsert<${tableClass.displayName}
 
     for (final columnInfo in columnInfos) {
       buffer.writeln(
-        '''    ${columnInfo.isRequired ? 'required ' : ''}${columnInfo.isOptionalNullable ? 'PgNullable<${columnInfo.type.replaceFirst('?', '')}' : columnInfo.type}${columnInfo.isOptionalNullable ? '>' : ''}${!columnInfo.isRequired ? '?' : ''} ${columnInfo.name},''',
+        '''    ${columnInfo.isRequired ? 'required ' : ''} this.${columnInfo.name},''',
       );
     }
 
@@ -91,7 +91,15 @@ class ${tableClass.displayName}Upsert extends PgUpsert<${tableClass.displayName}
       );
     }
 
-    buffer.writeln('    ]);\n}');
+    buffer.writeln('    ]);\n');
+
+    for (final columnInfo in columnInfos) {
+      buffer.writeln(
+        '''  final ${columnInfo.isOptionalNullable ? 'PgNullable<${columnInfo.type.replaceFirst('?', '')}' : columnInfo.type}${columnInfo.isOptionalNullable ? '>' : ''}${!columnInfo.isRequired ? '?' : ''} ${columnInfo.name};''',
+      );
+    }
+
+    buffer.writeln('\n}');
 
     return buffer.toString();
   }

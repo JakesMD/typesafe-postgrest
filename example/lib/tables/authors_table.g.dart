@@ -18,6 +18,9 @@ typedef AuthorsTableInsert = AuthorsTableUpsert;
 /// {@endtemplate}
 class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
   /// {@macro AuthorsTableUpsert}
-  AuthorsTableUpsert({required String name, BigInt? id})
+  AuthorsTableUpsert({required this.name, this.id})
     : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
+
+  final String name;
+  final BigInt? id;
 }

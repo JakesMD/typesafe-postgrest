@@ -19,14 +19,19 @@ typedef BooksTableInsert = BooksTableUpsert;
 class BooksTableUpsert extends PgUpsert<BooksTable> {
   /// {@macro BooksTableUpsert}
   BooksTableUpsert({
-    required String title,
-    required BigInt authorID,
-    PgNullable<int>? pages,
-    BigInt? id,
+    required this.title,
+    required this.authorID,
+    this.pages,
+    this.id,
   }) : super([
          BooksTable.title(title),
          BooksTable.authorID(authorID),
          if (pages != null) BooksTable.pages(pages.value),
          if (id != null) BooksTable.id(id),
        ]);
+
+  final String title;
+  final BigInt authorID;
+  final PgNullable<int>? pages;
+  final BigInt? id;
 }
