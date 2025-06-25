@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.2 - 25.06.25
+- ✨ Add `value` method to `PgUpsert`
+
 ## 0.1.1 - 24.06.25
 - 🐛 Fix generator not working for columns
 

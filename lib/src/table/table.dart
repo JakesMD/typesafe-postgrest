@@ -5,6 +5,7 @@ import 'package:typesafe_postgrest/src/modifier/modifier.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 export 'table_name.dart';
+export 'upsert.dart';
 
 /// {@template typesafe_postgrest.PgTable}
 ///

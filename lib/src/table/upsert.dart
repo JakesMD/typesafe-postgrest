@@ -21,4 +21,11 @@ class PgUpsert<TableType> {
 
   /// The values to insert or upsert.
   final PgValuesList<TableType> values;
+
+  /// Returns the value of the given column.
+  ValueType value<ValueType>(
+    PgQueryColumn<TableType, ValueType, dynamic> column,
+  ) =>
+      values.firstWhere((value) => value.columnName == column.name).value
+          as ValueType;
 }

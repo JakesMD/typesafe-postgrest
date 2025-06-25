@@ -2,7 +2,6 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
 export 'model_builder.dart';
 export 'nullable.dart';
-export 'upsert.dart';
 
 /// {@template typesafe_postgrest.PgModel}
 ///
