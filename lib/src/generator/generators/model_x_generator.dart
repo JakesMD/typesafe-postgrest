@@ -83,7 +83,7 @@ class PgModelXGenerator extends GeneratorForAnnotation<PgModelHere> {
                 //  -> Book.author(Author.builder)
                 //  -> 'Book.author', 'Author', 'builder)'
                 //                       ^
-                : elementInList.toString().split('(').last.split('.').first,
+                : '''${elementInList.toString().split('(').last.split('.').first}${staticType.typeArguments[1].toString().endsWith('?') ? '?' : ''}''',
           ),
         );
       }
