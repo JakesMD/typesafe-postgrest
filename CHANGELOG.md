@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.1 - 20.07.25
+- ✨ Add `bool` and `double` columns
+
 ## 0.2.0 - 25.06.25
 - ✨ Generate value getters for `PgUpsert`
 - 🔥 Remove `value` method from `PgUpsert`

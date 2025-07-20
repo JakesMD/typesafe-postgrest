@@ -487,14 +487,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.2"
+    version: "0.2.1"
   typesafe_supabase:
     dependency: "direct main"
     description:
       path: "../../typesafe_supabase"
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   very_good_analysis:
     dependency: "direct dev"
     description:
