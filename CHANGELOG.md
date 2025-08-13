@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.2 - 13.08.25
+- 🐛 Fix `PgStringFilterColumnX` not exported
+
 ## 0.2.1 - 20.07.25
 - ✨ Add `bool` and `double` columns
 
