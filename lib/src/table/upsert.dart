@@ -21,4 +21,9 @@ class PgUpsert<TableType> {
 
   /// The values to insert or upsert.
   final PgValuesList<TableType> values;
+
+  /// Returns the json map used to upsert the data via the API.
+  Map<String, dynamic> toJson() => {
+    for (final value in values) value.columnName: value.toJson(),
+  };
 }

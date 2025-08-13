@@ -1025,7 +1025,7 @@ class PgTable<TableType> {
 
   List<Map<String, dynamic>> _getMapsFromUpserts(
     List<PgUpsert<TableType>> upserts,
-  ) => upserts.map((upsert) => _getMapFromValues(upsert.values)).toList();
+  ) => upserts.map((upsert) => upsert.toJson()).toList();
 
   Map<String, dynamic> _getMapFromValues(PgValuesList<TableType> values) => {
     for (final value in values) value.columnName: value.toJson(),

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.3 - 13.08.25
+- ✨ Expose `toJson` on `PgUpsert`
+
 ## 0.2.2 - 13.08.25
 - 🐛 Fix `PgStringFilterColumnX` not exported
 
