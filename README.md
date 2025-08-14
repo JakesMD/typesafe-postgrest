@@ -577,6 +577,18 @@ final fakeAuthor = buildFakePgModel(
 );
 ```
 
+If you already have a fake model which is part of a table join, you can use the `fakeValuesFromModel` or `fakeValuesFromModels` methods.
+``` dart
+final fakeAuthor = buildFakePgModel(
+  modelBuilder: Author.builder,
+  fakeValues: [
+    AuthorsTable.books.fakeValuesFromModels(
+      [ fakeBook1, fakeBook2 ],
+    ),
+  ]
+);
+```
+
 ---
 
 # 👋 Contributing

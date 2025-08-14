@@ -50,4 +50,19 @@ class PgJoinToMany<TableType, JoinedTableType>
         {for (final value in values) value.columnName: value.toJson()},
     ],
   );
+
+  /// Creates a fake [PgValue] that contains the json required to build a
+  /// [PgModel] from multiple given [models] of the [JoinedTableType].
+  ///
+  /// Used for building fake models for testing purposes.
+  PgValue<TableType, dynamic, PgJsonList> fakeValuesFromModels(
+    List<PgModel<JoinedTableType>> models,
+  ) => PgValue(
+    joinedTableName.name,
+    null,
+    () => [
+      for (final model in models)
+        {for (final value in model.values) value.columnName: value.toJson()},
+    ],
+  );
 }

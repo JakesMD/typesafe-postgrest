@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.5 - 14.08.25
+- ✨ Add `fakeValuesFromModel` and `fakeValuesFromModels` methods
+
 ## 0.2.4 - 14.08.25
 - ✨ Add `buildFakePgModel` function
 
