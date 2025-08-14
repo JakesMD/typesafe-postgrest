@@ -1,5 +1,6 @@
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
+export 'fake_model_builder.dart';
 export 'model_builder.dart';
 export 'nullable.dart';
 

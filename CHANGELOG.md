@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.4 - 14.08.25
+- ✨ Add `buildFakePgModel` function
+
 ## 0.2.3 - 13.08.25
 - ✨ Expose `toJson` on `PgUpsert`
 

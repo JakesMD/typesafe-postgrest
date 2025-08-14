@@ -32,6 +32,18 @@ class PgJoinToOne<TableType, JoinedTableType>
     fromJson: (json) => builder.constructor(json),
     toJson: (_) => {},
   );
+
+  /// Creates a fake [PgValue] that contains the json required to build a
+  /// [PgModel].
+  ///
+  /// Used for building fake models for testing purposes.
+  PgValue<TableType, dynamic, PgJsonMap> fakeValues(
+    List<PgValue<JoinedTableType, dynamic, dynamic>> values,
+  ) => PgValue(
+    joinedTableName.name,
+    null,
+    () => {for (final value in values) value.columnName: value.toJson()},
+  );
 }
 
 /// {@template typesafe_postgrest.PgMaybeJoinToOne}
@@ -65,5 +77,17 @@ class PgMaybeJoinToOne<TableType, JoinedTableType>
     filterPattern: joinColumn.filterPattern,
     fromJson: (json) => json != null ? builder.constructor(json) : null,
     toJson: (_) => {},
+  );
+
+  /// Creates a fake [PgValue] that contains the json required to build a
+  /// [PgModel].
+  ///
+  /// Used for building fake models for testing purposes.
+  PgValue<TableType, dynamic, PgJsonMap> fakeValues(
+    List<PgValue<JoinedTableType, dynamic, dynamic>> values,
+  ) => PgValue(
+    joinedTableName.name,
+    null,
+    () => {for (final value in values) value.columnName: value.toJson()},
   );
 }
