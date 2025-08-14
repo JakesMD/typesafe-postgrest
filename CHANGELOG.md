@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.6 - 14.08.25
+- ✨ Add `PgMissingDataException`
+
 ## 0.2.5 - 14.08.25
 - ✨ Add `fakeValuesFromModel` and `fakeValuesFromModels` methods
 

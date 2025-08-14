@@ -42,7 +42,14 @@ class PgModel<TableType> {
   /// in the generated code.
   ValueType value<ValueType>(
     PgQueryColumn<TableType, ValueType, dynamic> column,
-  ) =>
-      values.firstWhere((value) => value.columnName == column.name).value
+  ) {
+    try {
+      return values.firstWhere((value) => value.columnName == column.name).value
           as ValueType;
+      // We're catching a StateError.
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      throw PgMissingDataException(column.name);
+    }
+  }
 }
