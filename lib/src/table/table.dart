@@ -1001,23 +1001,25 @@ class PgTable<TableType> {
     dynamic response,
     PgModelBuilder<TableType, ModelType> modelBuilder,
   ) {
-    if (response is PgJsonMap) return [modelBuilder.constructor(response)];
+    if (response is PgJsonMap) {
+      return [modelBuilder.constructor(response, null)];
+    }
     return PgJsonList.from(
       response as List,
-    ).map(modelBuilder.constructor).toList();
+    ).map((json) => modelBuilder.constructor(json, null)).toList();
   }
 
   ModelType _getModelFromRepsonse<ModelType extends PgModel<TableType>>(
     dynamic response,
     PgModelBuilder<TableType, ModelType> modelBuilder,
-  ) => modelBuilder.constructor(response as PgJsonMap);
+  ) => modelBuilder.constructor(response as PgJsonMap, null);
 
   ModelType? _maybeGetModelFromRepsonse<ModelType extends PgModel<TableType>>(
     dynamic response,
     PgModelBuilder<TableType, ModelType> modelBuilder,
   ) {
     if (response == null) return null;
-    return modelBuilder.constructor(response as PgJsonMap);
+    return modelBuilder.constructor(response as PgJsonMap, null);
   }
 
   String _getQueryPattern(PgQueryColumnList<TableType> columns) =>

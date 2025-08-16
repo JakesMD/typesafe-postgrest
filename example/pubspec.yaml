@@ -5,8 +5,8 @@ environment:
 
 dependencies:
   supabase: ^2.8.0
-  typesafe_postgrest: ^0.1.0
-  typesafe_supabase: ^0.0.3
+  typesafe_postgrest: ^0.3.0
+  typesafe_supabase: ^0.1.0
 
 dev_dependencies:
   very_good_analysis: ^9.0.0

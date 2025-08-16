@@ -20,7 +20,7 @@ class PgModelBuilder<TableType, ModelType extends PgModel<TableType>> {
 
   /// The constructor function that creates a new instance of [ModelType] from
   /// a [PgJsonMap].
-  final ModelType Function(PgJsonMap) constructor;
+  final ModelType Function(PgJsonMap?, PgValuesList<TableType>?) constructor;
 
   /// The list of columns that are part of the model.
   final PgQueryColumnList<TableType> columns;

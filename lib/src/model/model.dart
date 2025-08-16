@@ -1,6 +1,5 @@
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
-export 'fake_model_builder.dart';
 export 'model_builder.dart';
 export 'nullable.dart';
 
@@ -18,20 +17,18 @@ class PgModel<TableType> {
   ///
   /// It generates the values from the given JSON and builder's columns.
   PgModel(
-    Map<String, dynamic> json, {
+    Map<String, dynamic>? json,
+    PgValuesList<TableType>? values, {
     required PgModelBuilder<TableType, PgModel<TableType>> builder,
-  }) : values = json.entries.map((entry) {
-         final column = builder.columns.firstWhere(
-           (column) => column.name == entry.key,
-         );
-         return column.pgValueFromJson(entry.value);
-       }).toList();
-
-  /// Creates a new model from the given values.
-  ///
-  /// Generally, you shouldn't need to use this constructor directly. However,
-  /// if you need to create your own instance of a model, you can use this.
-  PgModel.fromValues(this.values);
+  }) : values =
+           values ??
+           json?.entries.map((entry) {
+             final column = builder.columns.firstWhere(
+               (column) => column.name == entry.key,
+             );
+             return column.pgValueFromJson(entry.value);
+           }).toList() ??
+           [];
 
   /// The values of the columns.
   final PgValuesList<TableType> values;

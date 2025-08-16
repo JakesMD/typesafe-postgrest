@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 - 16.08.25
+- ✨ Construct models from values directly (used in testing)
+- ✏️ Rename `PgJoinToOne.fakeValuesFromModel` to `fromModel`, `PgJoinToMany.fakeValuesFromModels` to `fromModels`
+- 🔥 Remove `buildFakePgModel`, `PgJoinToOne.fakeValues`, `PgJoinToMany.fakeValues`
+
 ## 0.2.6 - 14.08.25
 - ✨ Add `PgMissingDataException`
 

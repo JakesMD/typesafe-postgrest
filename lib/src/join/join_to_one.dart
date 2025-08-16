@@ -29,33 +29,16 @@ class PgJoinToOne<TableType, JoinedTableType>
     joinedTableName.name,
     queryPattern: generateQueryPattern(builder.columns, true),
     filterPattern: joinColumn.filterPattern,
-    fromJson: (json) => builder.constructor(json),
+    fromJson: (json) => builder.constructor(json, null),
     toJson: (_) => {},
   );
 
-  /// Creates a fake [PgValue] that contains the json required to build a
-  /// [PgModel].
+  /// Creates a fake [PgValue] that contains the given [model].
   ///
   /// Used for building fake models for testing purposes.
-  PgValue<TableType, dynamic, PgJsonMap> fakeValues(
-    List<PgValue<JoinedTableType, dynamic, dynamic>> values,
-  ) => PgValue(
-    joinedTableName.name,
-    null,
-    () => {for (final value in values) value.columnName: value.toJson()},
-  );
-
-  /// Creates a fake [PgValue] that contains the json required to build a
-  /// [PgModel] from a given [model] of the [JoinedTableType].
-  ///
-  /// Used for building fake models for testing purposes.
-  PgValue<TableType, dynamic, PgJsonMap> fakeValuesFromModel(
-    PgModel<JoinedTableType> model,
-  ) => PgValue(
-    joinedTableName.name,
-    null,
-    () => {for (final value in model.values) value.columnName: value.toJson()},
-  );
+  PgValue<TableType, ModelType, dynamic>
+  fromModel<ModelType extends PgModel<JoinedTableType>>(ModelType model) =>
+      PgValue(joinedTableName.name, model, () => null);
 }
 
 /// {@template typesafe_postgrest.PgMaybeJoinToOne}
@@ -87,31 +70,14 @@ class PgMaybeJoinToOne<TableType, JoinedTableType>
     joinedTableName.name,
     queryPattern: generateQueryPattern(builder.columns, true),
     filterPattern: joinColumn.filterPattern,
-    fromJson: (json) => json != null ? builder.constructor(json) : null,
+    fromJson: (json) => json != null ? builder.constructor(json, null) : null,
     toJson: (_) => {},
   );
 
-  /// Creates a fake [PgValue] that contains the json required to build a
-  /// [PgModel].
+  /// Creates a fake [PgValue] that contains the given [model].
   ///
   /// Used for building fake models for testing purposes.
-  PgValue<TableType, dynamic, PgJsonMap> fakeValues(
-    List<PgValue<JoinedTableType, dynamic, dynamic>> values,
-  ) => PgValue(
-    joinedTableName.name,
-    null,
-    () => {for (final value in values) value.columnName: value.toJson()},
-  );
-
-  /// Creates a fake [PgValue] that contains the json required to build a
-  /// [PgModel] from a given [model] of the [JoinedTableType].
-  ///
-  /// Used for building fake models for testing purposes.
-  PgValue<TableType, dynamic, PgJsonMap> fakeValuesFromModel(
-    PgModel<JoinedTableType> model,
-  ) => PgValue(
-    joinedTableName.name,
-    null,
-    () => {for (final value in model.values) value.columnName: value.toJson()},
-  );
+  PgValue<TableType, ModelType, dynamic>
+  fromModel<ModelType extends PgModel<JoinedTableType>>(ModelType model) =>
+      PgValue(joinedTableName.name, model, () => null);
 }

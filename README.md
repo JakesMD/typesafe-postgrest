@@ -33,7 +33,7 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
 ``` dart
 @PgModelHere()
 class Author extends PgModel<AuthorsTable> {
-  Author(super.json) : super(builder: builder);
+  Author(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<AuthorsTable, Author>(
     constructor: Author.new,
@@ -253,7 +253,7 @@ part 'author.g.dart';
 
 @PgModelHere()
 class Author extends PgModel<AuthorsTable> {
-  Author(super.json) : super(builder: builder);
+  Author(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<AuthorsTable, Author>(
     constructor: Author.new,
@@ -271,7 +271,7 @@ For joined relationships, you can even include models within models, creating ri
 
 ```dart
 class AuthorWithBooks extends PgModel<AuthorsTable> {
-  AuthorWithBooks(super.json) : super(builder: builder);
+  AuthorWithBooks(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<AuthorsTable, AuthorWithBooks>(
     constructor: AuthorWithBooks.new,
@@ -286,7 +286,7 @@ class AuthorWithBooks extends PgModel<AuthorsTable> {
 // Define AuthorBook as a separate model for the 'books' table in a separate file.
 @PgModelHere()
 class AuthorBook extends PgModel<BooksTable> {
-  AuthorBook(super.json) : super(builder: builder);
+  AuthorBook(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<BooksTable, AuthorBook>(
     constructor: AuthorBook.new,
@@ -551,41 +551,20 @@ Stream<Book> bookStream = booksTable.streamModel(
 
 ## 🧪 Testing
 
-`typesafe_postgrest` provides a `buildFakePgModel` function that allows you to create a `PgModel` without needing to write out the JSON data by hand.
+`typesafe_postgrest` allows you to create a `PgModel` without needing to write out the JSON data by hand.
 
 Since `PgModel`s do not require all the JSON data to be present, you only need to provide the fake values you want to test with.
 
 ``` dart
-final fakeAuthor = buildFakePgModel(
-  modelBuilder: Author.builder,
-  fakeValues: [
-    AuthorsTable.id(BigInt.one),
+final fakeAuthor = Author(
+  null,
+  [
     AuthorsTable.name('Michael Bond'),
-    AuthorsTable.books.fakeValues(
-      [
-        [
-          BooksTable.id(BigInt.one),
-          BooksTable.title('Paddington Here and Now'),
-        ],
-        [
-          BooksTable.id(BigInt.two),
-          BooksTable.title('More About Paddington'),
-        ],
-      ]
-    ),
-  ]
-);
-```
-
-If you already have a fake model which is part of a table join, you can use the `fakeValuesFromModel` or `fakeValuesFromModels` methods.
-``` dart
-final fakeAuthor = buildFakePgModel(
-  modelBuilder: Author.builder,
-  fakeValues: [
-    AuthorsTable.books.fakeValuesFromModels(
-      [ fakeBook1, fakeBook2 ],
-    ),
-  ]
+    AuthorsTable.books.fromModels([
+      AuthorBook(null, [BooksTable.title('Paddington Here and Now')]),
+      AuthorBook(null, [BooksTable.title('More About Paddington')]),
+    ]),
+  ],
 );
 ```
 

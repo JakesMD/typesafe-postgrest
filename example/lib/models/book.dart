@@ -6,7 +6,7 @@ part 'book.g.dart';
 
 @PgModelHere()
 class Book extends PgModel<BooksTable> {
-  Book(super.json) : super(builder: builder);
+  Book(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<BooksTable, Book>(
     constructor: Book.new,
