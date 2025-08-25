@@ -18,11 +18,15 @@ typedef PgValuesList<TableType> = List<PgValue<TableType, dynamic, dynamic>>;
 /// {@endtemplate}
 class PgMissingDataException implements Exception {
   /// {@macro typesafe_postgrest.PgMissingDataException}
-  PgMissingDataException(this.columnName);
+  PgMissingDataException.notInJson(String columnName)
+    : message = "The key '$columnName' was not found in the JSON data.";
 
-  final String columnName;
+  /// {@macro typesafe_postgrest.PgMissingDataException}
+  PgMissingDataException.notInValues(String columnName)
+    : message = "The value for '$columnName' was not found.";
+
+  final String message;
 
   @override
-  String toString() =>
-      '''PgMissingDataException: The key '$columnName' was not found in the JSON data.''';
+  String toString() => '''PgMissingDataException: $message''';
 }

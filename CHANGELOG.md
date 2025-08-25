@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1 - 25.08.25
+- 🐛 Fix `Bad state` error when additional field in JSON.
+
 ## 0.3.0 - 16.08.25
 - ✨ Construct models from values directly (used in testing)
 - ✏️ Rename `PgJoinToOne.fakeValuesFromModel` to `fromModel`, `PgJoinToMany.fakeValuesFromModels` to `fromModels`

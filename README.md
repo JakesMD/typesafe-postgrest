@@ -551,9 +551,7 @@ Stream<Book> bookStream = booksTable.streamModel(
 
 ## 🧪 Testing
 
-`typesafe_postgrest` allows you to create a `PgModel` without needing to write out the JSON data by hand.
-
-Since `PgModel`s do not require all the JSON data to be present, you only need to provide the fake values you want to test with.
+`typesafe_postgrest` allows you to create a `PgModel` without needing to write out the JSON data by hand. You only need to provide the fake values you want to test with.
 
 ``` dart
 final fakeAuthor = Author(

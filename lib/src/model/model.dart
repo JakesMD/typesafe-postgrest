@@ -22,13 +22,16 @@ class PgModel<TableType> {
     required PgModelBuilder<TableType, PgModel<TableType>> builder,
   }) : values =
            values ??
-           json?.entries.map((entry) {
-             final column = builder.columns.firstWhere(
-               (column) => column.name == entry.key,
-             );
-             return column.pgValueFromJson(entry.value);
-           }).toList() ??
-           [];
+           (json != null
+               ? builder.columns.map((column) {
+                   final entry = json.entries.firstWhere(
+                     (entry) => entry.key == column.name,
+                     orElse: () =>
+                         throw PgMissingDataException.notInJson(column.name),
+                   );
+                   return column.pgValueFromJson(entry.value);
+                 }).toList()
+               : []);
 
   /// The values of the columns.
   final PgValuesList<TableType> values;
@@ -46,7 +49,7 @@ class PgModel<TableType> {
       // We're catching a StateError.
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
-      throw PgMissingDataException(column.name);
+      throw PgMissingDataException.notInValues(column.name);
     }
   }
 }
