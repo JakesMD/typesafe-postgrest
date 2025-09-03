@@ -20,7 +20,7 @@ class PgUTCDateTimeColumn<TableType>
   PgUTCDateTimeColumn(super.name)
     : super(
         fromJson: DateTime.parse,
-        toJson: (value) => value.toIso8601String(),
+        toJson: (value) => value.toUtc().toIso8601String(),
       );
 }
 

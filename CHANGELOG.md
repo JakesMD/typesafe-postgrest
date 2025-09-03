@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.2 - 03.09.25
+- 🐛 Fix `PgUTCDateTimeColumn` not converting to UTC.
+
 ## 0.3.1 - 25.08.25
 - 🐛 Fix `Bad state` error when additional field in JSON.
 
